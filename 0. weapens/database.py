@@ -6,7 +6,15 @@ import sys
 import time
 
 class Oracle:
-    def __init__(self,username,password,tns,encoding):
+
+    def __init__(self,username,password,tns,encoding="UTF-8"):
+        """
+
+        :param username: 数据库用户
+        :param password: 数据库密码
+        :param tns: 像这样的一串字符，可以在TNSNAMES.ORA里面找到   "(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = your_ip_address_1)(PORT = your_port)) (ADDRESS = (PROTOCOL = TCP)(HOST = your_ip_address_2)(PORT = your_port)))(CONNECT_DATA =(SERVICE_NAME = your_service_name)))"
+        :param encoding:UTF-8
+        """
         self.user = username
         self.pwd = password
         self.tns = tns
@@ -19,8 +27,9 @@ class Oracle:
     def __GetConnect(self):
         """
         得到连接信息
-        返回: conn.cursor()
+        :return:conn.cursor()
         """
+
         if not self.tns:
             raise(NameError,"没有设置TNS信息")
         self.conn = cx_Oracle.connect(self.user, self.pwd, self.tns, encoding=self.encoding)
@@ -34,8 +43,8 @@ class Oracle:
     def ExecQuery(self,sql):
         """
         执行查询语句
-        返回的是一个包含tuple的list，list的元素是记录行，tuple的元素是每行记录的字段
-
+        :param sql:查询语句
+        :return:返回的是一个包含{}的list，list的元素是记录行，{}的元素是每行记录的字段和值
         """
         cur = self.__GetConnect()
         result=cur.execute(sql)
@@ -59,8 +68,7 @@ class Oracle:
     def ExecNonQuery(self,sql):
         """
         执行非查询语句
-
-        调用示例：
+            调用示例：
             cur = self.__GetConnect()
             cur.execute(sql)
             self.conn.commit()
@@ -77,7 +85,15 @@ class Oracle:
 
 
 class Mssql:
-    def __init__(self,host,user,password,database,charset):
+    def __init__(self,host,user,password,database,charset="utf8"):
+        """
+
+        :param host: 数据库地址和端口 ip:port
+        :param user:  用户名
+        :param password: 密码
+        :param database: 数据库名称
+        :param charset: utf8
+        """
         self.host = host
         self.user = user
         self.pwd = password
